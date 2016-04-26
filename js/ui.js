@@ -7,15 +7,30 @@ d3.json('../source/meta.json', function(error, meta) {
   function updateParty(v) {
     var party = which(this.value, d3.select('input[name="parties"]:checked').node().value);
     generateUI(party);
-    updateChart({});
+    updateChart({
+      states : ['NY', 'AL'],
+      party: party,
+      question_id : 'sex',
+      exclude_targets : []
+    });
   }
-
+  
   function generateUI(party) {
-    console.log('generating UI for:' + party);
-    
-    createOptions('candidates', meta[party]['candidates']);    
-    createChoice('questions', meta[party]['questions']);    
-    createOptions('states', meta[party]['states']);    
+    createOptions('candidates', meta[party]['candidates']);
+    var questionChoice = createChoice('questions', meta[party]['questions']);
+    createOptions('states', meta[party]['states']);
+    questionChoice.on('change', updateQuestion);
+  }
+  
+  function updateQuestion(v) {
+    var party = d3.select('input[name="parties"]:checked').node().value;
+    var question_id = which(this.value, d3.select('input[name="questions"]:checked').node().value);
+    updateChart({
+      states : ['NY', 'AL'],
+      party: party,
+      question_id : this.value,
+      exclude_targets : []
+    });
   }
   
   function triggerChange(d, i) {
@@ -23,7 +38,7 @@ d3.json('../source/meta.json', function(error, meta) {
   }
 
   function which() {
-    for (var i=0; i < arguments.length; i++) {
+    for (var i = 0; i < arguments.length; i++) {
       if (typeof arguments[i] != 'undefined') {
         return arguments[i];
       }
