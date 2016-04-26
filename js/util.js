@@ -22,8 +22,9 @@ var rollup = function rollup(data) {
 }
 
 /* Pre: Takes in the complete data.json file.
- * filters : { states, party, question_id, exclude_answers }
- * Post: Returns answers : {}  TODO: define the answers obejct
+ * filters : { states, party, question_id, exclude_targets }
+ * Post: Returns answers : {}  
+ * TODO: define the answers obejct, currently using from the data json
  */
 var generateAnswers = function(data, filters) {
   // Get all the answers/links and filter the states
