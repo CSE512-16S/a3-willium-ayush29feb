@@ -9,8 +9,6 @@ import urllib.parse
 __dir__ = os.path.realpath(
     os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
-__parent__ = os.path.join(os.path.dirname(__file__), os.pardir)
-
 SOURCE = 'http://data.cnn.com/ELECTION/2016primary/{}/xpoll/{}full.json'
 
 STATES = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN',
@@ -42,7 +40,7 @@ def source_poll(state, party):
 
 def save(data, filename='data.json'):
     """saves data to a JSON file"""
-    location = os.path.join(__parent__, filename)
+    location = os.path.join(__dir__, filename)
     with open(location, 'w') as outfile:
         json.dump(data, outfile)
 
