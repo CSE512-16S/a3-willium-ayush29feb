@@ -57,10 +57,18 @@ export function draw(graph) {
         return function(t) { return (d3.interpolateString("0," + len, len + ",0"))(t) }
       });
   
-  // Append Tittle
+  // Append Title
   links.append('title')
     .text(function (d) {
       return d.source.name + ' to ' + d.target.name + ' = ' + d.value;
+    });
+  
+  // Tooltips
+  links.on('mouseover', function(d) {
+      console.log(d);
+    })
+  .on('mouseout', function(d){
+      console.log(d);
     });
   
   // Exit
@@ -68,7 +76,8 @@ export function draw(graph) {
    
   // Draw the nodes
   var nodes = nodesGroup.selectAll('.node')
-    .data(graph.nodes, function(o) { return o.meta.target_id + '.' + o.meta.source_rank + '.' + o.value; });
+    .data(graph.nodes, function(o) { return o.meta.target_id + '.' + o.meta.source_rank + '.' + o.value; })
+    .attr('height', 0);
   // Enter
   var nodesEnterSelection = nodes.enter()
     .append('g')
@@ -87,16 +96,16 @@ export function draw(graph) {
   // Enter + Update
   nodes
     .attr('transform', function (d) { return 'translate(' + d.x + ',' + d.y + ')'; });
-  nodes.select('rect')
-    .attr('height', function (d) { return d.dy; })
-    .style('fill', function (d) { 
-      console.log(d);
+  
+  nodes.select('rect').style('fill', function (d) {
       if (d.type === 'source') return '#9089BF';
       return '#BB4747'; // TODO: Color Based on the parties
     })
-    .style('stroke', function (d) { return d3.rgb(d.color).darker(2); })
-    .style('stroke-width', 0);
-  
+    .transition().duration(2000).ease('linear')
+      .attr('height', function (d) { return d.dy; })
+    // .style('stroke', function (d) { return d3.rgb(d.color).darker(2); })
+    // .style('stroke-width', 0);
+
   nodes.select('rect').select('title')
     .text(function (d) { return d.name; });
   
