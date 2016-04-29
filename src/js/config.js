@@ -1,8 +1,8 @@
 const config = {
   chart: {
     node: {
-      width: 40,
-      padding: 40,
+      width: 30,
+      padding: 10,
       margin: 10
     },
     iterations: 32,
