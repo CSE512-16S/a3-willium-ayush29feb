@@ -48,14 +48,14 @@ export function draw(graph) {
   // Enter + Update
   links
     .attr('d', path)
-    .style('stroke-width', function (d) { return Math.max(1, d.dy); })
-    .transition()
-      .duration(1000)
-      .ease('linear')
-      .attrTween('stroke-dasharray', function(abc) {
-        var len = this.getTotalLength();
-        return function(t) { return (d3.interpolateString("0," + len, len + ",0"))(t) }
-      });
+    .style('stroke-width', function (d) { return Math.max(1, d.dy); });
+    // .transition()
+    //   .duration(1000)
+    //   .ease('linear')
+    //   .attrTween('stroke-dasharray', function(abc) {
+    //     var len = this.getTotalLength();
+    //     return function(t) { return (d3.interpolateString("0," + len, len + ",0"))(t) }
+    //   });
   
   // Append Title
   links.append('title')
@@ -101,7 +101,7 @@ export function draw(graph) {
       if (d.type === 'source') return '#9089BF';
       return '#BB4747'; // TODO: Color Based on the parties
     })
-    .transition().duration(2000).ease('linear')
+    .transition().duration(250).ease('linear')
       .attr('height', function (d) { return d.dy; })
     // .style('stroke', function (d) { return d3.rgb(d.color).darker(2); })
     // .style('stroke-width', 0);
