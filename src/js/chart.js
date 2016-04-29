@@ -47,9 +47,15 @@ export function draw(graph) {
     .attr('class', 'link');
   // Enter + Update
   links.attr('d', path)
-    .style('stroke-width', function (d) {
-      return Math.max(1, d.dy);
-    });
+    .style('stroke-width', function (d) { return Math.max(1, d.dy); })
+    .transition()
+      .duration(2000)
+      .attrTween('stroke-dasharray', function() {
+        var len = this.getTotalLength();
+        return function(t) { return (d3.interpolateString("0," + len, len + ",0"))(t) }
+      })
+  
+  // Append Tittle
   links.append('title')
     .text(function (d) {
       return d.source.name + ' to ' + d.target.name + ' = ' + d.value;
