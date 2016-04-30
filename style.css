@@ -170,12 +170,15 @@ select {
 .node rect {
   fill-opacity: .9;
   shape-rendering: crispEdges; }
-  .node rect.source {
-    fill: #836BA2; }
-  .node rect.target.r {
-    fill: #BB4747; }
-  .node rect.target.d {
-    fill: #476FBB; }
+
+.node.source rect {
+  fill: #836BA2; }
+
+.node.target.r rect {
+  fill: #BB4747; }
+
+.node.target.d rect {
+  fill: #476FBB; }
 
 .node text {
   font-size: 20px; }
@@ -183,10 +186,12 @@ select {
 .link {
   fill: none;
   stroke: #836BA2;
-  stroke-opacity: .20; }
+  stroke-opacity: .20;
+  transition: all 0.1s linear; }
 
 .link:hover {
-  stroke-opacity: .50; }
+  stroke: #524E6F;
+  stroke-opacity: .60; }
 
 label {
   display: block; }
@@ -226,7 +231,7 @@ label {
       height: 100%;
       width: 100%;
       display: block;
-      transition: all 0.1s linear; }
+      transition: all 0.2s linear; }
     #canvas #parties-switch .party#r > input[type="radio"]:checked + label {
       background-color: #BB4747; }
     #canvas #parties-switch .party#d > input[type="radio"]:checked + label {
