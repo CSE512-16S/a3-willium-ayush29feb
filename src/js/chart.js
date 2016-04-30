@@ -41,22 +41,29 @@ export function draw(graph) {
     
   // Draw the links
   var links = linksGroup.selectAll('.link').data(graph.links, function(o) { return o.meta.id; });
+  
   // Enter
   links.enter()
     .append('path')
-    .attr('class', 'link');
+    .attr('class', 'link')
+    .attr('d', path)
+    .style('stroke-width', function (d) { return Math.max(1, d.dy); })
+    .transition()
+      .duration(1000)
+      .ease('linear')
+      .attrTween('stroke-dasharray', function(abc) {
+        var len = this.getTotalLength();
+        return function(t) { return (d3.interpolateString("0," + len, len + ",0"))(t) }
+      });
+  
   // Enter + Update
   links
     .attr('d', path)
-    .style('stroke-width', function (d) { return Math.max(1, d.dy); });
-    // .transition()
-    //   .duration(1000)
-    //   .ease('linear')
-    //   .attrTween('stroke-dasharray', function(abc) {
-    //     var len = this.getTotalLength();
-    //     return function(t) { return (d3.interpolateString("0," + len, len + ",0"))(t) }
-    //   });
-  
+    .transition()
+      .duration(500)
+      .ease('linear')
+      .style('stroke-width', function (d) { return Math.max(1, d.dy); });
+
   // Append Title
   links.append('title')
     .text(function (d) {
@@ -72,19 +79,25 @@ export function draw(graph) {
     });
   
   // Exit
-  links.exit().remove();
+  links.exit()
+    // .transition().duration(500)
+    // .style('stroke-width', function (d) { return 0 })
+    .remove();
    
   // Draw the nodes
   var nodes = nodesGroup.selectAll('.node')
     .data(graph.nodes, function(o) { return o.meta.target_id + '.' + o.meta.source_rank + '.' + o.value; })
     .attr('height', 0);
+  
   // Enter
   var nodesEnterSelection = nodes.enter()
     .append('g')
     .attr('class', 'node');
+  
   nodesEnterSelection.append('rect')
     .attr('width', sankey.nodeWidth())
     .append('title');
+    
   nodesEnterSelection.append('text')
     .attr('x', function(d) {
       return _.isEqual(d.type, 'source') ? -config.chart.node.margin : (sankey.nodeWidth() + config.chart.node.margin);
@@ -105,7 +118,7 @@ export function draw(graph) {
       .attr('height', function (d) { return d.dy; })
     // .style('stroke', function (d) { return d3.rgb(d.color).darker(2); })
     // .style('stroke-width', 0);
-
+    
   nodes.select('rect').select('title')
     .text(function (d) { return d.name; });
   
