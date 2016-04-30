@@ -212,6 +212,7 @@ label {
   font-family: "gothambookregular", "Georgia", sans-serif; }
   #canvas #parties-switch .party {
     display: inline-block;
+    font-family: "gothambookregular", "Georgia", sans-serif;
     height: 40px;
     line-height: 40px;
     margin: 0;
