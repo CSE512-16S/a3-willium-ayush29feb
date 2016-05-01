@@ -164,24 +164,29 @@ select {
   line-height: inherit; }
 
 #chart {
-  padding-top: 30px;
-  font-family: "charterregular", "Georgia", serif; }
+  font-family: "charterregular", "Georgia", serif;
+  overflow-x: auto;
+  width: 100%;
+  margin: 0 auto;
+  overflow-y: hidden; }
   #chart svg {
     margin: 0 auto; }
 
-.node rect {
-  fill-opacity: .9;
-  shape-rendering: crispEdges;
-  cursor: pointer; }
+.nodes {
+  overflow: visible; }
 
-.node.source rect {
-  fill: #836BA2; }
-
-.node.target.r rect {
-  fill: #BB4747; }
-
-.node.target.d rect {
-  fill: #476FBB; }
+.node {
+  overflow: visible; }
+  .node rect {
+    fill-opacity: .9;
+    shape-rendering: crispEdges;
+    cursor: pointer; }
+  .node.source rect {
+    fill: #836BA2; }
+  .node.target.r rect {
+    fill: #BB4747; }
+  .node.target.d rect {
+    fill: #476FBB; }
 
 .node text {
   font-size: 20px; }
@@ -297,7 +302,7 @@ label {
 
 #canvas #bins {
   font-size: 18px;
-  padding: 10px 0; }
+  margin-top: 10px; }
   #canvas #bins h3 {
     display: inline;
     padding-right: 10px;
@@ -329,3 +334,29 @@ label {
       #canvas #bins #bins-switch .bin input[type="radio"]:checked + label {
         color: #333136;
         font-family: "gothamboldregular", "Georgia", sans-serif; }
+
+#canvas #axis {
+  width: 1200px;
+  margin: 0 auto; }
+  #canvas #axis #axis-labels {
+    font-size: 18px;
+    width: 700px;
+    margin: 50px auto 0;
+    font-family: "gothambookregular", "Georgia", sans-serif;
+    text-transform: uppercase;
+    color: #9B979F;
+    overflow: visible;
+    display: block; }
+    #canvas #axis #axis-labels #right-label, #canvas #axis #axis-labels #left-label {
+      display: inline;
+      width: 300px; }
+    #canvas #axis #axis-labels #right-label {
+      float: right;
+      margin-right: -150px; }
+    #canvas #axis #axis-labels #left-label {
+      float: left;
+      margin-left: -150px; }
+    #canvas #axis #axis-labels:after {
+      content: "";
+      display: table;
+      clear: both; }
