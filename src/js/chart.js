@@ -1,7 +1,9 @@
 import d3 from 'd3';
 import config from './config';
 import UI from './ui';
+import * as util from './util';
 import { Sankey } from './sankey';
+import _ from 'lodash';
 
 // Basic chart constants
 var margin = { top: config.chart.margin.top, right: config.chart.margin.right, bottom: config.chart.margin.bottom, left: config.chart.margin.left },
@@ -40,7 +42,9 @@ export function draw(graph, options, callback) {
     .nodes(graph.nodes)
     .links(graph.links)
     .layout(config.chart.iterations);
-    
+  
+  appendPercent(graph);
+  
   // Draw the links
   var links = linksGroup.selectAll('.link').data(graph.links, function(d) { return d.meta.id; });
   // Enter
@@ -87,12 +91,11 @@ export function draw(graph, options, callback) {
       return 'translate(' + point.x + ',' + point.y + ')';
     })
     .select('text')
-        .text(function(d, i) {
-          let type = i < graph.links.length ? 'source' :'target';
-          return type + d.value;
-        })
-        .attr('text-anchor', 'middle')
-        .attr('dy', 6)
+      .text(function(d, i) {
+        return i < graph.links.length ? d.sourcePercent : d.targetPercent;
+      })
+      .attr('text-anchor', 'middle')
+      .attr('dy', 6);
   
   // Exit
   linkLabels.exit().remove();
@@ -106,9 +109,11 @@ export function draw(graph, options, callback) {
       return 'node ' + d.type + ' ' + d.meta.party.toLowerCase();
     })
     .attr('id', function(d) { return 'node' + d.meta.id; })
+  
   nodesEnterSelection.append('rect')
     .attr('width', sankey.nodeWidth())
     .append('title');
+  
   nodesEnterSelection.append('text')
     .attr('x', function(d) {
       return _.isEqual(d.type, 'source') ? -config.chart.node.margin : (sankey.nodeWidth() + config.chart.node.margin);
@@ -118,6 +123,7 @@ export function draw(graph, options, callback) {
       return _.isEqual(d.type, 'source') ? 'end' : 'start';
     })
     .attr('transform', null);
+  
   nodesEnterSelection.on("contextmenu", function(d, i) {
     d3.event.preventDefault();
     callback(d3.select('.node.' + d.type + '#node' + d.meta.id), d.type, options);
@@ -125,6 +131,7 @@ export function draw(graph, options, callback) {
     d3.event.preventDefault();
     callback(d3.selectAll('.node.' + d.type + ':not(#node' + d.meta.id + ')'), d.type, options);
   });
+  
   nodesEnterSelection.on('mouseover', function(d) {
   d3.selectAll('.link')
     .filter(function (o) {
@@ -134,29 +141,65 @@ export function draw(graph, options, callback) {
   }).on('mouseout', function(d) {
     d3.selectAll('.selected').classed('selected', false);
   });
+  
   // Enter + Update
   nodes
     .attr('transform', function(d) {
       return 'translate(' + d.x + ',' + d.y + ')';
     });
+  
   nodes.select('rect')
     .attr('height', function(d) {
       return d.dy;
     })
+  
   nodes.select('rect').select('title')
     .text(function(d) {
       return d.name;
     });
+  
   nodes.select('text')
     .attr('y', function(d) {
       return d.dy / 2;
     })
     .text(function(d) {
-      return d.name;
-    })
-    
+      return d.name + ' (' + d.percent + '%)';
+    });
   // Exit
   nodes.exit().remove();
   
   return shelf;
 };
+
+function appendPercent(graph) {
+  _.forEach(graph.nodes, function(d) {
+    let totalValue = 0;
+    const peerNodes = _.filter(graph.nodes, function(o) {
+      return _.isEqual(o.type, d.type);
+    });
+    _.forEach(peerNodes, function(d) {
+      totalValue += d.value;
+    })
+    d.percent = Math.round(d.value / totalValue * 100);
+  });
+  
+  _.forEach(graph.links, function(d) {
+    let sourceValue = 0;
+    let targetValue = 0;
+    const sourceNodes = _.filter(graph.nodes, function(o) {
+      return _.isEqual(o.meta.source_rank, d.meta.source_rank);
+    });
+    const targetNodes = _.filter(graph.nodes, function(o) {
+      return _.isEqual(o.meta.target_id, d.meta.target_id);
+    });
+    
+    _.forEach(sourceNodes, function(o) {
+      sourceValue += o.value;
+    });
+    _.forEach(targetNodes, function(o) {
+      targetValue += o.value;
+    });
+    d.sourcePercent = Math.round(d.value / sourceValue * 100);
+    d.targetPercent = Math.round(d.value / targetValue * 100);
+  });
+}
