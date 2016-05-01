@@ -4,9 +4,15 @@ export function process(data, filter) {
   let processedData = filterData(data, filter);
   processedData = rollup(processedData);
   processedData = generateGraph(processedData);
+  processedData = calcPercent(processedData);
   return processedData;
 }
 
+/* This function takes the raw data and returns the 
+ * data for the given party, question after filtering 
+ * all the Null values, checking all the states, candidates
+ * and answers asked are included.
+*/
 function filterData(data, filter) {
   let partial = _.get(data, filter['party']);
   partial = _.get(partial, filter['question']);
@@ -19,17 +25,21 @@ function filterData(data, filter) {
     const answerMatch = _.includes(filter['answers'], d['source_rank']);
     return notNull && stateMatch && candidateMatch && answerMatch;
   });
-  
   return partial;
 }
 
+/* This is essentially a aggregator function that returns
+ * an array containing deep copy of data with aggregated value
+ * and also an array of states voted at
+*/
 function rollup(data) {
   var output = [];
 
   _.forEach(data, function(row) {
     var existing = output.filter(function(d){
-      return _.isEqual(d.source, row.source) && _.isEqual(d.target, row.target)
-    })
+      return _.isEqual(d.source, row.source) && _.isEqual(d.target, row.target);
+    });
+
     if (existing.length) {
       var index = output.indexOf(existing[0]);
       
@@ -47,25 +57,32 @@ function rollup(data) {
   return output;
 }
 
+function calcPercent(graph) {
+  // Add % in links - Source 
+  // Add % in links - Target
+  // Add % in Nodes - Source
+  // Add % in Nodes - Target
+  return graph;
+}
+
 function generateGraph(data) {
   // initialize the graph object
   var graph = { 'nodes': [], 'links': [] };
-
+  
   // Add all the data to graph
   data.forEach(function(d) {
     graph.nodes.push({ 'name': d.source, 'type': 'source', 'meta': d });
     graph.nodes.push({ 'name': d.target, 'type': 'target', 'meta': d });
     graph.links.push({ 'source': d.source, 'target': d.target, 'value': +d.value, 'meta': d });
   });
-
+  
   graph.nodes = _.uniqWith(graph.nodes, function(a, b) { return _.isEqual(a.name, b.name); })
 
   // Switch links source/target from data to index in the nodes
   _.forEach(graph.links, function(d) {
     d.source = _.findIndex(graph.nodes, function(n) { return _.isEqual(n.name, d.source); });
     d.target = _.findIndex(graph.nodes, function(n) { return _.isEqual(n.name, d.target); });
-  });  
-    
+  });
   // return graph
   return graph;
 }
