@@ -56,11 +56,56 @@ export function draw(graph, options, callback) {
     .text(function(d) {
       return d.source.name + ' to ' + d.target.name + ' = ' + d.value;
     });
+
   links.on('mouseover', function(d) {
     d3.select(this).moveToFront();
   });
   // Exit
   links.exit().remove();
+
+  var sourceLabels = linksGroup.selectAll('.link-label.source').data(graph.links, function(d) { return d.meta.id; });
+  // Enter
+  sourceLabels.enter()
+    .append('g')
+    .attr('class', 'link-label source')
+    .append('text')
+    
+  // Enter + Update
+  sourceLabels.attr('transform', function(d) {
+      let p = svg.append('path').attr('d', function(o){ return path(d); }).style('display', 'none').node();
+      let length = p.getTotalLength();
+      let point = p.getPointAtLength(0.05 * length);
+      p.remove();
+      return 'translate(' + point.x + ',' + point.y + ')';
+    })
+    .select('text')
+        .text(function(d) {
+          return d.value;
+        })
+        .attr('text-anchor', 'middle')
+        .attr('dy', 6)
+  
+  var targetLabels = linksGroup.selectAll('.link-label.target').data(graph.links, function(d) { return d.meta.id; });
+  // Enter
+  targetLabels.enter()
+    .append('g')
+    .attr('class', 'link-label target')
+    .append('text')
+    
+  // Enter + Update
+  targetLabels.attr('transform', function(d) {
+      let p = svg.append('path').attr('d', function(o){ return path(d); }).style('display', 'none').node();
+      let length = p.getTotalLength();
+      let point = p.getPointAtLength(0.95 * length);
+      p.remove();
+      return 'translate(' + point.x + ',' + point.y + ')';
+    })
+    .select('text')
+        .text(function(d) {
+          return d.value;
+        })
+        .attr('text-anchor', 'middle')
+        .attr('dy', 6)
 
   // Draw the nodes
   var nodes = nodesGroup.selectAll('.node').data(graph.nodes, function(d) { return d.meta.target_id + '.' + d.meta.source_rank + '.' + d.value; });

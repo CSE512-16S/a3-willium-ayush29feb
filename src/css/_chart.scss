@@ -23,6 +23,10 @@
     cursor: pointer;
   }
   
+  text {
+    font-size: 20px;
+  }
+  
   &.source {
     rect {
       fill: $COLOR__royal;
@@ -42,15 +46,15 @@
   }
 }
 
-.node text {
-  font-size: 20px;
-}
-
 .link {
   fill: none;
   stroke: $COLOR__royal;
   stroke-opacity: .20;
   @include transition(all 0.1s linear);
+  
+  text {
+    font-size: 20px;
+  }
 }
 
 .link:hover, .selected {

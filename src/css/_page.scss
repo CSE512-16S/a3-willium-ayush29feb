@@ -26,6 +26,8 @@ $width: $full-width - ($margin*2);
 }
 
 #canvas {  
+  text-align: center;
+  
   #parties-switch {
     padding: 50px 0;
     font-family: $FONT__sans;
