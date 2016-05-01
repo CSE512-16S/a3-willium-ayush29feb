@@ -84,7 +84,9 @@ export function draw(graph, options, callback) {
         })
         .attr('text-anchor', 'middle')
         .attr('dy', 6)
-  
+  // Exit
+  sourceLabels.exit().remove();
+    
   var targetLabels = linksGroup.selectAll('.link-label.target').data(graph.links, function(d) { return d.meta.id; });
   // Enter
   targetLabels.enter()
@@ -106,7 +108,9 @@ export function draw(graph, options, callback) {
         })
         .attr('text-anchor', 'middle')
         .attr('dy', 6)
-
+  // Exit
+  targetLabels.exit().remove();
+  
   // Draw the nodes
   var nodes = nodesGroup.selectAll('.node').data(graph.nodes, function(d) { return d.meta.target_id + '.' + d.meta.source_rank + '.' + d.value; });
   // Enter
