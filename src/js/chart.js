@@ -6,16 +6,33 @@ import { Sankey } from './sankey';
 // Basic chart constants
 var margin = { top: config.chart.margin.top, right: config.chart.margin.right, bottom: config.chart.margin.bottom, left: config.chart.margin.left },
   width = config.chart.width - margin.left - margin.right,
-  height = config.chart.height - margin.top - margin.bottom;
+  height = config.chart.height - margin.top - margin.bottom,
+  titleHeight = 20;
 
 // Select and initialize the size of the chart
 var svg = d3.select('#chart').append('svg')
   .attr({
     width: width + margin.left + margin.right,
     height: height + margin.top + margin.bottom
-  })
-  .append('g')
+  });
+  
+var labels = svg.append('g')
   .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+labels.append('text')
+  .text('Responses')
+  .attr('class', 'labels')
+  .attr('text-anchor', 'start')
+  .attr('transform', 'translate(' + -25 + ',' + 0 + ')');
+
+labels.append('text')
+  .text('Candidates')
+  .attr('class', 'labels')
+  .attr('text-anchor', 'end')
+  .attr('transform', 'translate(' + (width + 30) + ',' + 0 + ')');
+
+svg = svg.append('g')
+  .attr('transform', 'translate(' + margin.left + ',' + (margin.top + titleHeight) + ')');
 
 // create groups for links and nodes
 var linksGroup = svg.append('g').attr('class', 'links');
@@ -25,13 +42,14 @@ var nodesGroup = svg.append('g').attr('class', 'nodes');
 var sankey = Sankey()
   .nodeWidth(config.chart.node.width)
   .nodePadding(config.chart.node.padding)
-  .size([width, height]);
+  .size([width, height - titleHeight]);
 
 // Get path data generator
 var path = sankey.link();
 
 // draw chart
 export function draw(graph, options, callback) {
+  console.log(options)
   sankey
     .nodes(graph.nodes)
     .links(graph.links)
