@@ -51,9 +51,13 @@
   stroke: $COLOR__royal;
   stroke-opacity: .20;
   @include transition(all 0.1s linear);
-  
+}
+
+.link-label {
   text {
     font-size: 20px;
+    // fill: $COLOR__white;
+    font-family: $FONT__sans--bold;
   }
 }
 

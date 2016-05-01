@@ -80,7 +80,6 @@ export function draw(graph, options, callback) {
   // Enter + Update
   linksGroup.selectAll('.link-label').attr('transform', function(d, i) {
       let location = i < graph.links.length ? 0.05 : 0.95;
-      console.log('transform', i);
       let p = svg.append('path').attr('d', function(o){ return path(d); }).style('display', 'none').node();
       let length = p.getTotalLength();
       let point = p.getPointAtLength(location * length);
