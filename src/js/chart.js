@@ -63,53 +63,40 @@ export function draw(graph, options, callback) {
   // Exit
   links.exit().remove();
 
-  var sourceLabels = linksGroup.selectAll('.link-label.source').data(graph.links, function(d) { return d.meta.id; });
+  var linkLabels = linksGroup.selectAll('.link-label').data(graph.links, function(d) { return d.meta.id; });
   // Enter
-  sourceLabels.enter()
+  var linkLabelEnterSelection = linkLabels.enter();
+  
+  linkLabelEnterSelection
     .append('g')
-    .attr('class', 'link-label source')
-    .append('text')
+      .attr('class', 'link-label source-label')
+      .append('text')
+  
+  linkLabelEnterSelection
+    .append('g')
+      .attr('class', 'link-label target-label')
+      .append('text')
     
   // Enter + Update
-  sourceLabels.attr('transform', function(d) {
+  linksGroup.selectAll('.link-label').attr('transform', function(d, i) {
+      let location = i < graph.links.length ? 0.05 : 0.95;
+      console.log('transform', i);
       let p = svg.append('path').attr('d', function(o){ return path(d); }).style('display', 'none').node();
       let length = p.getTotalLength();
-      let point = p.getPointAtLength(0.05 * length);
+      let point = p.getPointAtLength(location * length);
       p.remove();
       return 'translate(' + point.x + ',' + point.y + ')';
     })
     .select('text')
-        .text(function(d) {
-          return d.value;
+        .text(function(d, i) {
+          let type = i < graph.links.length ? 'source' :'target';
+          return type + d.value;
         })
         .attr('text-anchor', 'middle')
         .attr('dy', 6)
+  
   // Exit
-  sourceLabels.exit().remove();
-    
-  var targetLabels = linksGroup.selectAll('.link-label.target').data(graph.links, function(d) { return d.meta.id; });
-  // Enter
-  targetLabels.enter()
-    .append('g')
-    .attr('class', 'link-label target')
-    .append('text')
-    
-  // Enter + Update
-  targetLabels.attr('transform', function(d) {
-      let p = svg.append('path').attr('d', function(o){ return path(d); }).style('display', 'none').node();
-      let length = p.getTotalLength();
-      let point = p.getPointAtLength(0.95 * length);
-      p.remove();
-      return 'translate(' + point.x + ',' + point.y + ')';
-    })
-    .select('text')
-        .text(function(d) {
-          return d.value;
-        })
-        .attr('text-anchor', 'middle')
-        .attr('dy', 6)
-  // Exit
-  targetLabels.exit().remove();
+  linkLabels.exit().remove();
   
   // Draw the nodes
   var nodes = nodesGroup.selectAll('.node').data(graph.nodes, function(d) { return d.meta.target_id + '.' + d.meta.source_rank + '.' + d.value; });
