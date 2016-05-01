@@ -39,11 +39,16 @@
   @include transition(all 0.1s linear);
 }
 
-.link:hover {
+.link:hover, .selected {
   stroke: $COLOR__wine;
   stroke-opacity: .60;
 }
 
 label {
   display: block;
+}
+
+.labels {
+  font-size: 24px;
+  font-family: $FONT__serif;
 }
