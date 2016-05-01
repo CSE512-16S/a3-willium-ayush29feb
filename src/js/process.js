@@ -4,7 +4,6 @@ export function process(data, filter) {
   let processedData = filterData(data, filter);
   processedData = rollup(processedData);
   processedData = generateGraph(processedData);
-  processedData = calcPercent(processedData);
   return processedData;
 }
 
@@ -55,14 +54,6 @@ function rollup(data) {
   });
 
   return output;
-}
-
-function calcPercent(graph) {
-  // Add % in links - Source 
-  // Add % in links - Target
-  // Add % in Nodes - Source
-  // Add % in Nodes - Target
-  return graph;
 }
 
 function generateGraph(data) {

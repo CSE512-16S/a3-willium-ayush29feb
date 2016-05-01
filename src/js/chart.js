@@ -1,6 +1,7 @@
 import d3 from 'd3';
 import config from './config';
 import UI from './ui';
+import { appendPercent } from './util';
 import { Sankey } from './sankey';
 
 // Basic chart constants
@@ -36,7 +37,9 @@ export function draw(graph, options, callback) {
     .nodes(graph.nodes)
     .links(graph.links)
     .layout(config.chart.iterations);
-    
+  
+  appendPercent(graph);
+  
   // Draw the links
   var links = linksGroup.selectAll('.link').data(graph.links, function(d) { return d.meta.id; });
   // Enter
@@ -67,9 +70,11 @@ export function draw(graph, options, callback) {
       return 'node ' + d.type + ' ' + d.meta.party.toLowerCase();
     })
     .attr('id', function(d) { return 'node' + d.meta.id; })
+  
   nodesEnterSelection.append('rect')
     .attr('width', sankey.nodeWidth())
     .append('title');
+  
   nodesEnterSelection.append('text')
     .attr('x', function(d) {
       return _.isEqual(d.type, 'source') ? -config.chart.node.margin : (sankey.nodeWidth() + config.chart.node.margin);
@@ -79,6 +84,7 @@ export function draw(graph, options, callback) {
       return _.isEqual(d.type, 'source') ? 'end' : 'start';
     })
     .attr('transform', null);
+  
   nodesEnterSelection.on("contextmenu", function(d, i) {
     d3.event.preventDefault();
     callback(d3.select('.node.' + d.type + '#node' + d.meta.id), d.type, options);
@@ -86,6 +92,7 @@ export function draw(graph, options, callback) {
     d3.event.preventDefault();
     callback(d3.selectAll('.node.' + d.type + ':not(#node' + d.meta.id + ')'), d.type, options);
   });
+  
   nodesEnterSelection.on('mouseover', function(d) {
   d3.selectAll('.link')
     .filter(function (o) {
@@ -95,25 +102,29 @@ export function draw(graph, options, callback) {
   }).on('mouseout', function(d) {
     d3.selectAll('.selected').classed('selected', false);
   });
+  
   // Enter + Update
   nodes
     .attr('transform', function(d) {
       return 'translate(' + d.x + ',' + d.y + ')';
     });
+  
   nodes.select('rect')
     .attr('height', function(d) {
       return d.dy;
     })
+  
   nodes.select('rect').select('title')
     .text(function(d) {
       return d.name;
     });
+  
   nodes.select('text')
     .attr('y', function(d) {
       return d.dy / 2;
     })
     .text(function(d) {
-      return d.name;
+      return d.name + ' (' + d.percent + '%)';
     });
   // Exit
   nodes.exit().remove();
