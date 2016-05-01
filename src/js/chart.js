@@ -1,7 +1,7 @@
 import d3 from 'd3';
 import config from './config';
 import UI from './ui';
-import { appendPercent } from './util';
+import * as util from './util';
 import { Sankey } from './sankey';
 
 // Basic chart constants
@@ -38,7 +38,7 @@ export function draw(graph, options, callback) {
     .links(graph.links)
     .layout(config.chart.iterations);
   
-  appendPercent(graph);
+  util.appendPercent(graph);
   
   // Draw the links
   var links = linksGroup.selectAll('.link').data(graph.links, function(d) { return d.meta.id; });
