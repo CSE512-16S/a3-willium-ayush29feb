@@ -187,14 +187,14 @@ export function draw(graph, options, callback) {
     });
   
   nodeTitles.attr('y', function(d) {
-      return d.dy / 2 - 10;
+      return d.dy / 2 - 11;
     })
     .text(function(d) {
       return d.name;
     })
   
   nodeSubtitles.attr('y', function(d) {
-      return d.dy / 2 + 10;
+      return d.dy / 2 + 11;
     }).text(function(d) {
       return d.percent + '%';
     })
