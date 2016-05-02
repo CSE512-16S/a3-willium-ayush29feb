@@ -101,7 +101,7 @@ export function draw(graph, options, callback) {
         return (i < graph.links.length ? d.sourcePercent : d.targetPercent) + '%';
       })
       .attr('font-size', function (d) {
-        return Math.min('20px', Math.round(d.dy * 0.6) + 'px');
+        return _.min([20, _.round(d.dy * 1.2)]) + 'px';
       })
       .classed('hidden', function(d) {
         return d.dy < 10;
