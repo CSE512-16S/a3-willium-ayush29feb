@@ -23,23 +23,28 @@
     cursor: pointer;
   }
   
-  text {
+  .nodeTitle {
     font-size: 20px;
   }
   
+  .nodeSubtitle {
+    font-size: 18px;
+    opacity: 0.7;
+  }
+  
   &.source {
-    rect {
+    rect, .nodeSubtitle {
       fill: $COLOR__royal;
     }
   }
   &.target {
     &.r {
-      rect {
+      rect, .nodeSubtitle {
         fill: $COLOR__chestnut;
       }
     }
     &.d {
-      rect {
+      rect, .nodeSubtitle {
         fill: $COLOR__marino;
       }
     }
@@ -56,14 +61,13 @@
 .link-label {
   text {
     font-size: 20px;
-    // fill: $COLOR__white;
     font-family: $FONT__sans--bold;
   }
 }
 
 .selected {
   stroke: $COLOR__wine;
-  stroke-opacity: .60;
+  stroke-opacity: .7;
 }
 
 label {
