@@ -123,7 +123,19 @@ export function draw(graph, options, callback) {
     .attr('width', sankey.nodeWidth())
     .append('title');
   
-  nodesEnterSelection.append('text')
+  var nodeTitles = nodesEnterSelection.append('text')
+    .attr('class', 'nodeTitle')
+    .attr('x', function(d) {
+      return _.isEqual(d.type, 'source') ? -config.chart.node.margin : (sankey.nodeWidth() + config.chart.node.margin);
+    })
+    .attr('dy', '.35em')
+    .attr('text-anchor', function(d) {
+      return _.isEqual(d.type, 'source') ? 'end' : 'start';
+    })
+    .attr('transform', null);
+    
+  var nodeSubtitles = nodesEnterSelection.append('text')
+    .attr('class', 'nodeSubtitle')
     .attr('x', function(d) {
       return _.isEqual(d.type, 'source') ? -config.chart.node.margin : (sankey.nodeWidth() + config.chart.node.margin);
     })
@@ -167,13 +179,18 @@ export function draw(graph, options, callback) {
       return d.name;
     });
   
-  nodes.select('text')
-    .attr('y', function(d) {
-      return d.dy / 2;
+  nodeTitles.attr('y', function(d) {
+      return d.dy / 2 - 10;
     })
     .text(function(d) {
-      return d.name + ' (' + d.percent + '%)';
-    });
+      return d.name;
+    })
+  
+  nodeSubtitles.attr('y', function(d) {
+      return d.dy / 2 + 10;
+    }).text(function(d) {
+      return d.percent + '%';
+    })
   // Exit
   nodes.exit().remove();
   

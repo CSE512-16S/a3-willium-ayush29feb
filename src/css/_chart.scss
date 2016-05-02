@@ -23,23 +23,28 @@
     cursor: pointer;
   }
   
-  text {
+  .nodeTitle {
     font-size: 20px;
   }
   
+  .nodeSubtitle {
+    font-size: 18px;
+    opacity: 0.7;
+  }
+  
   &.source {
-    rect {
+    rect, .nodeSubtitle {
       fill: $COLOR__royal;
     }
   }
   &.target {
     &.r {
-      rect {
+      rect, .nodeSubtitle {
         fill: $COLOR__chestnut;
       }
     }
     &.d {
-      rect {
+      rect, .nodeSubtitle {
         fill: $COLOR__marino;
       }
     }
