@@ -77,9 +77,7 @@ This would be broken by making the diagram bi-directional.
 The writing and architecting of the codebase overall deffinitely took the most time. Creating the diagram was relatively easy once we got the right data to be in the right place at the right time to best utilize d3's data binding methods.
 
 ### Division of labor
-
-Include:
-- Breakdown of how the work was split among the group members.
-- A commentary on the development process, including answers to the following questions:
-  - Roughly how much time did you spend developing your application?
-  - What aspects took the most time?
+- Will & Ayush together worked on the storyboard and decided what interaction should be implemented.
+- Will wrote the python scripts to scrape the CNN website to collect data and cleaned it.
+- Ayush worked on the initial implementation of `Sankey.js` & Implemented interactions like hover highlighting, labels, and file structure.
+- Will worked on most of the UI controls, shelf, and rewriting in browerisfy.
