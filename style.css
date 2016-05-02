@@ -147,7 +147,7 @@ a {
 *::selection {
   background: #FFFBC6; }
 
-input[type="radio"] {
+input[type="radio"], input[type="checkbox"] {
   display: none; }
 
 .hidden {
@@ -188,7 +188,8 @@ select {
     opacity: 0.7;
     font-family: "gothambookregular", "Georgia", sans-serif; }
   .node.source rect, .node.source .nodeSubtitle {
-    fill: #836BA2; }
+    fill: #836BA2;
+    cursor: default; }
   .node.target.r rect, .node.target.r .nodeSubtitle {
     fill: #BB4747; }
   .node.target.d rect, .node.target.d .nodeSubtitle {
@@ -368,3 +369,81 @@ label {
         content: "";
         display: table;
         clear: both; }
+  #canvas #states, #canvas #shelf {
+    display: block;
+    margin: 30px auto;
+    width: 950px; }
+    #canvas #states h3, #canvas #shelf h3 {
+      width: 250px;
+      float: left;
+      padding-right: 10px;
+      font-family: "gothambookregular", "Georgia", sans-serif;
+      text-transform: uppercase;
+      color: #9B979F;
+      text-align: right;
+      margin-left: -125px;
+      display: inline-block; }
+    #canvas #states #states-select, #canvas #states #shelf-items, #canvas #shelf #states-select, #canvas #shelf #shelf-items {
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-flow: row wrap;
+          flex-flow: row wrap;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+      -ms-flex-align: start;
+          align-items: flex-start; }
+      #canvas #states #states-select > *, #canvas #states #shelf-items > *, #canvas #shelf #states-select > *, #canvas #shelf #shelf-items > * {
+        -ms-flex: 0 0 auto;
+            flex: 0 0 auto;
+        margin-right: 10px;
+        margin-bottom: 10px; }
+    #canvas #states #states-select, #canvas #shelf #states-select {
+      float: left;
+      width: 700px; }
+      #canvas #states #states-select .state label, #canvas #shelf #states-select .state label {
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        line-height: 42px;
+        color: #333136;
+        font-family: "charterregular", "Georgia", serif;
+        background-color: #D5D4DB;
+        margin: auto;
+        font-size: 16px;
+        border: solid 4px #D5D4DB;
+        cursor: pointer;
+        transition: all 0.2s linear; }
+      #canvas #states #states-select .state input[type="checkbox"]:checked + label, #canvas #shelf #states-select .state input[type="checkbox"]:checked + label {
+        color: #fff;
+        background-color: #333136;
+        border: solid 4px #333136; }
+      #canvas #states #states-select:after, #canvas #shelf #states-select:after {
+        content: "";
+        display: table;
+        clear: both; }
+    #canvas #states #shelf-items, #canvas #shelf #shelf-items {
+      float: left;
+      width: 700px;
+      padding: 10px;
+      border: 4px dashed #D5D4DB;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-flow: row wrap;
+          flex-flow: row wrap;
+      -ms-flex-pack: start;
+          justify-content: flex-start; }
+      #canvas #states #shelf-items .item, #canvas #shelf #shelf-items .item {
+        height: 50px;
+        line-height: 50px;
+        padding: 0 20px;
+        color: #fff;
+        font-family: "charterregular", "Georgia", serif;
+        cursor: pointer; }
+        #canvas #states #shelf-items .item.r, #canvas #shelf #shelf-items .item.r {
+          background-color: #BB4747; }
+        #canvas #states #shelf-items .item.d, #canvas #shelf #shelf-items .item.d {
+          background-color: #476FBB; }
+    #canvas #states:after, #canvas #shelf:after {
+      content: "";
+      display: table;
+      clear: both; }
