@@ -63,24 +63,27 @@ export function draw(graph, options, callback) {
   links.on('mouseover', function(d) {
     d3.select(this).moveToFront();
     d3.select(this).classed('selected', true);
+    d3.selectAll('.label-' + d.meta.id).classed('hidden', false);
   }).on('mouseout', function(d) {
     d3.select(this).classed('selected', false);
+    d3.selectAll('.label-' + d.meta.id).classed('hidden', true)
   });
   // Exit
   links.exit().remove();
-  var labeldata = _.concat(graph.links, graph.links);
-  console.log(labeldata.length);
+  
   var linkLabels = linksGroup.selectAll('.link-label')
-    .data(labeldata, function(d, i) { return i < graph.links.length ? 'source-' + d.meta.id : 'target-' + d.meta.id; });
-  console.log(linkLabels);
+    .data(_.concat(graph.links, graph.links), function(d, i) { 
+      return i < graph.links.length ? 'source-' + d.meta.id : 'target-' + d.meta.id; 
+    });
+    
   // Enter
   var linkLabelEnterSelection = linkLabels.enter();
   
   linkLabelEnterSelection
     .append('g')
       .attr('class', function (d, i) {
-        console.log(i);
-        return i < graph.links.length ? 'link-label source-label' : 'link-label target-label';
+        return i < graph.links.length ? 'link-label hidden label-' + d.meta.id : 
+          'link-label hidden label-' + d.meta.id;
       })
       .append('text');
   
@@ -101,9 +104,7 @@ export function draw(graph, options, callback) {
     })
     .select('text')
       .text(function(d, i) {
-        console.log(i);
-        console.log(d.source.name, d.target.name);
-        return i < graph.links.length ? d.sourcePercent : d.targetPercent;
+        return i < graph.links.length ? d.sourcePercent + '%' : d.targetPercent + '%';
       })
       .attr('text-anchor', 'middle')
       .attr('dy', 6);
@@ -144,11 +145,11 @@ export function draw(graph, options, callback) {
   });
   
   nodesEnterSelection.on('mouseover', function(d) {
-  d3.selectAll('.link')
-    .filter(function (o) {
-      return (_.isEqual(d.type, 'source') && _.isEqual(o.meta.source_rank, d.meta.source_rank)) ||
-        (_.isEqual(d.type, 'target') && _.isEqual(o.meta.target_id, d.meta.target_id));
-    }).classed('selected', true);
+    d3.selectAll('.link')
+      .filter(function (o) {
+        return (_.isEqual(d.type, 'source') && _.isEqual(o.meta.source_rank, d.meta.source_rank)) ||
+          (_.isEqual(d.type, 'target') && _.isEqual(o.meta.target_id, d.meta.target_id));
+      }).classed('selected', true);
   }).on('mouseout', function(d) {
     d3.selectAll('.selected').classed('selected', false);
   });
