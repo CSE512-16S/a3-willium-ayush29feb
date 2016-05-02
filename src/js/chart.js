@@ -100,6 +100,12 @@ export function draw(graph, options, callback) {
       .text(function(d, i) {
         return (i < graph.links.length ? d.sourcePercent : d.targetPercent) + '%';
       })
+      .attr('font-size', function (d) {
+        return Math.min('20px', Math.round(d.dy * 0.6) + 'px');
+      })
+      .classed('hidden', function(d) {
+        return d.dy < 10;
+      })
       .attr('text-anchor', 'middle')
       .attr('dy', 6);
 
