@@ -100,9 +100,6 @@ export function draw(graph, options, callback) {
       .text(function(d, i) {
         return (i < graph.links.length ? d.sourcePercent : d.targetPercent) + '%';
       })
-      .attr('font-size', function (d) {
-        return _.min([20, _.round(d.dy * 1.2)]) + 'px';
-      })
       .classed('hidden', function(d) {
         return d.dy < 10;
       })
