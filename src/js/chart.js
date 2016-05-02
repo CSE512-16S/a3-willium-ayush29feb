@@ -80,9 +80,12 @@ export function draw(graph, options, callback) {
   
   linkLabelEnterSelection
     .append('g')
-      .attr('class', function (d, i) {
+      .attr('class', function(d, i) {
         return 'link-label hidden label-' + d.meta.id + ' link-label-source-' + 
           d.meta.source_rank + ' link-label-target-' + d.meta.target_id;
+      })
+      .attr('data-type', function(d, i) {
+         return (i < graph.links.length ? 'source' : 'target')
       })
       .append('text');
 
@@ -99,9 +102,6 @@ export function draw(graph, options, callback) {
     .select('text')
       .text(function(d, i) {
         return (i < graph.links.length ? d.sourcePercent : d.targetPercent) + '%';
-      })
-      .classed('hidden', function(d) {
-        return d.dy < 10;
       })
       .attr('text-anchor', 'middle')
       .attr('dy', 6);
@@ -164,7 +164,9 @@ export function draw(graph, options, callback) {
     
     const labelsClass = d.type === 'source' ? '.link-label-source-' + d.meta.source_rank : 
       '.link-label-target-' + d.meta.target_id;
-    d3.selectAll(labelsClass).classed('hidden', false).moveToFront();
+    d3.selectAll(labelsClass).classed('hidden', function(o) {
+      return (o.dy < 10) && _.isEqual(d3.select(this).attr('data-type'), d.type);
+    }).moveToFront();
   }).on('mouseout', function(d) {
     d3.selectAll('.selected').classed('selected', false);
     
