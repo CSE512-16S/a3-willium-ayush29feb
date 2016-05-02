@@ -178,28 +178,37 @@ select {
 .node {
   overflow: visible; }
   .node rect {
-    fill-opacity: .9;
+    fill-opacity: 1;
     shape-rendering: crispEdges;
     cursor: pointer; }
-  .node.source rect {
+  .node .nodeTitle {
+    font-size: 20px; }
+  .node .nodeSubtitle {
+    font-size: 17px;
+    opacity: 0.7;
+    font-family: "gothambookregular", "Georgia", sans-serif; }
+  .node.source rect, .node.source .nodeSubtitle {
     fill: #836BA2; }
-  .node.target.r rect {
+  .node.target.r rect, .node.target.r .nodeSubtitle {
     fill: #BB4747; }
-  .node.target.d rect {
+  .node.target.d rect, .node.target.d .nodeSubtitle {
     fill: #476FBB; }
-
-.node text {
-  font-size: 20px; }
 
 .link {
   fill: none;
   stroke: #836BA2;
-  stroke-opacity: .20;
+  stroke-opacity: .25;
   transition: all 0.1s linear; }
 
-.link:hover, .selected {
+.link-label text {
+  font-family: "gothamboldregular", "Georgia", sans-serif;
+  font-size: 17px;
+  fill: #333136;
+  pointer-events: none; }
+
+.selected {
   stroke: #524E6F;
-  stroke-opacity: .60; }
+  stroke-opacity: .70; }
 
 label {
   display: block; }
@@ -220,143 +229,142 @@ label {
     padding-top: 20px;
     font-size: 24px; }
 
-#canvas #parties-switch {
-  padding: 50px 0;
-  font-family: "gothambookregular", "Georgia", sans-serif; }
-  #canvas #parties-switch .party {
-    display: inline-block;
-    font-family: "gothambookregular", "Georgia", sans-serif;
-    height: 40px;
-    line-height: 40px;
-    margin: 0;
-    color: #fff;
-    text-align: center;
-    width: 150px; }
-    #canvas #parties-switch .party label {
-      cursor: pointer;
-      background-color: #D5D4DB;
-      font-size: 17px;
-      height: 100%;
-      width: 100%;
-      display: block;
-      transition: all 0.2s linear; }
-    #canvas #parties-switch .party#r > input[type="radio"]:checked + label {
-      background-color: #BB4747; }
-    #canvas #parties-switch .party#d > input[type="radio"]:checked + label {
-      background-color: #476FBB; }
-
-#canvas #questions {
-  margin: 0 auto;
-  max-width: 700px;
-  position: relative;
-  height: 66px;
-  border: 8px solid #333136; }
-  #canvas #questions #questions-q {
-    width: 50px;
-    font-family: "charterregular", "Georgia", serif;
-    position: absolute;
-    left: 0;
-    height: 52px;
-    border-right: 8px solid #333136;
-    display: inline-block;
-    background-color: #333136;
-    line-height: 50px;
-    color: #fff;
-    font-size: 32px; }
-  #canvas #questions #questions-dropdown {
-    position: absolute;
-    left: 50px;
-    right: 0;
-    display: inline-block;
-    max-width: 634px;
-    height: 50px; }
-    #canvas #questions #questions-dropdown .arr {
-      background: #fff;
-      bottom: 5px;
-      position: absolute;
-      right: 5px;
-      top: 5px;
-      width: 50px;
-      pointer-events: none; }
-      #canvas #questions #questions-dropdown .arr:before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        right: 15px;
-        margin-top: -5px;
-        pointer-events: none;
-        border-top: 8px solid #333136;
-        border-left: 8px solid transparent;
-        border-right: 8px solid transparent; }
-    #canvas #questions #questions-dropdown select#questions-select {
+#canvas {
+  text-align: center; }
+  #canvas #parties-switch {
+    padding: 20px 0 50px;
+    font-family: "gothambookregular", "Georgia", sans-serif; }
+    #canvas #parties-switch .party {
       display: inline-block;
-      background: #fff;
-      color: #333136;
-      border: 0;
-      height: 50px;
-      line-height: 50px;
-      width: 100%;
-      font-family: "charterbold", "Georgia", serif;
-      padding: 0 15px;
-      font-size: 22px; }
-
-#canvas #bins {
-  font-size: 18px;
-  margin-top: 10px; }
-  #canvas #bins h3 {
-    display: inline;
-    padding-right: 10px;
-    font-family: "gothambookregular", "Georgia", sans-serif;
-    text-transform: uppercase;
-    color: #9B979F; }
-  #canvas #bins #bins-switch {
-    display: inline; }
-    #canvas #bins #bins-switch .bin {
-      display: inline-block;
+      font-family: "gothambookregular", "Georgia", sans-serif;
       height: 40px;
       line-height: 40px;
       margin: 0;
-      color: #9B979F;
-      font-family: "gothambookregular", "Georgia", sans-serif;
-      text-align: center; }
-      #canvas #bins #bins-switch .bin label {
+      color: #fff;
+      text-align: center;
+      width: 150px; }
+      #canvas #parties-switch .party label {
         cursor: pointer;
+        background-color: #D5D4DB;
+        font-size: 17px;
         height: 100%;
         width: 100%;
-        display: inline; }
-      #canvas #bins #bins-switch .bin:after {
-        content: '|';
-        padding: 0 5px;
-        display: inline; }
-      #canvas #bins #bins-switch .bin:last-child:after {
-        content: '';
-        display: none; }
-      #canvas #bins #bins-switch .bin input[type="radio"]:checked + label {
+        display: block;
+        transition: all 0.2s linear; }
+      #canvas #parties-switch .party#r > input[type="radio"]:checked + label {
+        background-color: #BB4747; }
+      #canvas #parties-switch .party#d > input[type="radio"]:checked + label {
+        background-color: #476FBB; }
+  #canvas #questions {
+    margin: 0 auto;
+    max-width: 700px;
+    position: relative;
+    height: 66px;
+    border: 8px solid #333136; }
+    #canvas #questions #questions-q {
+      width: 50px;
+      font-family: "charterregular", "Georgia", serif;
+      position: absolute;
+      left: 0;
+      height: 52px;
+      border-right: 8px solid #333136;
+      display: inline-block;
+      background-color: #333136;
+      line-height: 50px;
+      color: #fff;
+      font-size: 32px; }
+    #canvas #questions #questions-dropdown {
+      position: absolute;
+      left: 50px;
+      right: 0;
+      display: inline-block;
+      max-width: 634px;
+      height: 50px; }
+      #canvas #questions #questions-dropdown .arr {
+        background: #fff;
+        bottom: 5px;
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        width: 50px;
+        pointer-events: none; }
+        #canvas #questions #questions-dropdown .arr:before {
+          content: '';
+          position: absolute;
+          top: 50%;
+          right: 15px;
+          margin-top: -5px;
+          pointer-events: none;
+          border-top: 8px solid #333136;
+          border-left: 8px solid transparent;
+          border-right: 8px solid transparent; }
+      #canvas #questions #questions-dropdown select#questions-select {
+        display: inline-block;
+        background: #fff;
         color: #333136;
-        font-family: "gothamboldregular", "Georgia", sans-serif; }
-
-#canvas #axis {
-  width: 1200px;
-  margin: 0 auto; }
-  #canvas #axis #axis-labels {
+        border: 0;
+        height: 50px;
+        line-height: 50px;
+        width: 100%;
+        font-family: "charterbold", "Georgia", serif;
+        padding: 0 15px;
+        font-size: 22px; }
+  #canvas #bins {
     font-size: 18px;
-    width: 700px;
-    margin: 50px auto 0;
-    font-family: "gothambookregular", "Georgia", sans-serif;
-    text-transform: uppercase;
-    color: #9B979F;
-    overflow: visible;
-    display: block; }
-    #canvas #axis #axis-labels #right-label, #canvas #axis #axis-labels #left-label {
+    margin-top: 10px; }
+    #canvas #bins h3 {
       display: inline;
-      width: 300px; }
-    #canvas #axis #axis-labels #right-label {
-      float: right;
-      margin-right: -150px; }
-    #canvas #axis #axis-labels #left-label {
-      float: left;
-      margin-left: -150px; }
-    #canvas #axis #axis-labels:after {
-      content: "";
-      display: table;
-      clear: both; }
+      padding-right: 10px;
+      font-family: "gothambookregular", "Georgia", sans-serif;
+      text-transform: uppercase;
+      color: #9B979F; }
+    #canvas #bins #bins-switch {
+      display: inline; }
+      #canvas #bins #bins-switch .bin {
+        display: inline-block;
+        height: 40px;
+        line-height: 40px;
+        margin: 0;
+        color: #9B979F;
+        font-family: "gothambookregular", "Georgia", sans-serif;
+        text-align: center; }
+        #canvas #bins #bins-switch .bin label {
+          cursor: pointer;
+          height: 100%;
+          width: 100%;
+          display: inline; }
+        #canvas #bins #bins-switch .bin:after {
+          content: '|';
+          padding: 0 5px;
+          display: inline; }
+        #canvas #bins #bins-switch .bin:last-child:after {
+          content: '';
+          display: none; }
+        #canvas #bins #bins-switch .bin input[type="radio"]:checked + label {
+          color: #333136;
+          font-family: "gothamboldregular", "Georgia", sans-serif; }
+  #canvas #axis {
+    width: 1200px;
+    margin: 0 auto; }
+    #canvas #axis #axis-labels {
+      font-size: 18px;
+      width: 700px;
+      margin: 50px auto 2px;
+      font-family: "gothambookregular", "Georgia", sans-serif;
+      text-transform: uppercase;
+      color: #9B979F;
+      overflow: visible;
+      display: block; }
+      #canvas #axis #axis-labels #right-label, #canvas #axis #axis-labels #left-label {
+        display: inline;
+        width: 300px; }
+      #canvas #axis #axis-labels #right-label {
+        float: right;
+        margin-right: -150px; }
+      #canvas #axis #axis-labels #left-label {
+        float: left;
+        margin-left: -150px; }
+      #canvas #axis #axis-labels:after {
+        content: "";
+        display: table;
+        clear: both; }
