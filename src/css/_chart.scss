@@ -18,7 +18,7 @@
   overflow: visible;
   
   rect {
-    fill-opacity: .9;
+    fill-opacity: 1;
     shape-rendering: crispEdges;
     cursor: pointer;
   }
@@ -29,7 +29,7 @@
   
   .nodeSubtitle {
     font-size: 18px;
-    opacity: 0.7;
+    opacity: 0.8;
   }
   
   &.source {
@@ -54,7 +54,7 @@
 .link {
   fill: none;
   stroke: $COLOR__royal;
-  stroke-opacity: .20;
+  stroke-opacity: .25;
   @include transition(all 0.1s linear);
 }
 
@@ -67,7 +67,7 @@
 
 .selected {
   stroke: $COLOR__wine;
-  stroke-opacity: .7;
+  stroke-opacity: .75;
 }
 
 label {
