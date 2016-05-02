@@ -82,15 +82,10 @@ export function draw(graph, options, callback) {
   linkLabelEnterSelection
     .append('g')
       .attr('class', function (d, i) {
-        return i < graph.links.length ? 'link-label hidden label-' + d.meta.id : 
-          'link-label hidden label-' + d.meta.id;
+        return i < graph.links.length ? 'link-label hidden label-' + d.meta.id + ' link-label-source-' + d.meta.source_rank + ' link-label-target-' + d.meta.target_id : 
+          'link-label hidden label-' + d.meta.id + ' link-label-source-' + d.meta.source_rank + ' link-label-target-' + d.meta.target_id;
       })
       .append('text');
-  
-  // linkLabelEnterSelection
-  //   .append('g')
-  //     .attr('class', 'link-label target-label')
-  //     .append('text')
     
   // Enter + Update
   linkLabels
@@ -152,8 +147,14 @@ export function draw(graph, options, callback) {
         return (_.isEqual(d.type, 'source') && _.isEqual(o.meta.source_rank, d.meta.source_rank)) ||
           (_.isEqual(d.type, 'target') && _.isEqual(o.meta.target_id, d.meta.target_id));
       }).classed('selected', true);
+    const labelsClass = d.type === 'source' ? '.link-label-source-' + d.meta.source_rank : 
+      '.link-label-target-' + d.meta.target_id;
+    d3.selectAll(labelsClass).classed('hidden', false);
   }).on('mouseout', function(d) {
     d3.selectAll('.selected').classed('selected', false);
+    const labelsClass = d.type === 'source' ? '.link-label-source-' + d.meta.source_rank : 
+      '.link-label-target-' + d.meta.target_id;
+    d3.selectAll(labelsClass).classed('hidden', true);
   });
   
   // Enter + Update
@@ -201,4 +202,6 @@ function appendPercent(graph) {
     d.sourcePercent = Math.round(d.value / d.source.value * 100);
     d.targetPercent = Math.round(d.value / d.target.value * 100);
   });
+  
+  console.log(graph);
 }
