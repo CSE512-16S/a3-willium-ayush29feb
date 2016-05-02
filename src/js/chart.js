@@ -113,7 +113,9 @@ export function draw(graph, options, callback) {
   linkLabels.exit().remove();
   
   // Draw the nodes
-  var nodes = nodesGroup.selectAll('.node').data(graph.nodes, function(d) { return d.meta.target_id + '.' + d.meta.source_rank + '.' + d.value; });
+  var nodes = nodesGroup.selectAll('.node').data(graph.nodes, function(d) { 
+    return d.meta.target_id + '.' + d.meta.source_rank + '.' + d.value; 
+  });
   // Enter
   var nodesEnterSelection = nodes.enter()
     .append('g')
@@ -196,22 +198,7 @@ function appendPercent(graph) {
   });
   
   _.forEach(graph.links, function(d) {
-    let sourceValue = 0;
-    let targetValue = 0;
-    const sourceNodes = _.filter(graph.nodes, function(o) {
-      return _.isEqual(o.meta.source_rank, d.meta.source_rank);
-    });
-    const targetNodes = _.filter(graph.nodes, function(o) {
-      return _.isEqual(o.meta.target_id, d.meta.target_id);
-    });
-    
-    _.forEach(sourceNodes, function(o) {
-      sourceValue += o.value;
-    });
-    _.forEach(targetNodes, function(o) {
-      targetValue += o.value;
-    });
-    d.sourcePercent = Math.round(d.value / sourceValue * 100);
-    d.targetPercent = Math.round(d.value / targetValue * 100);
+    d.sourcePercent = Math.round(d.value / d.source.value * 100);
+    d.targetPercent = Math.round(d.value / d.target.value * 100);
   });
 }
