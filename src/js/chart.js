@@ -57,7 +57,7 @@ export function draw(graph, options, callback) {
     });
   links.append('title')
     .text(function(d) {
-      return d.source.name + ' to ' + d.target.name + ' = ' + d.value;
+      return d.sourcePercent + '% of those who answersed "' + d.source.name + '" make up ' + d.targetPercent + '% of the votes for "' + d.target.name + '"';
     });
 
   links.on('mouseover', function(d) {
@@ -87,11 +87,6 @@ export function draw(graph, options, callback) {
       })
       .append('text');
   
-  // linkLabelEnterSelection
-  //   .append('g')
-  //     .attr('class', 'link-label target-label')
-  //     .append('text')
-    
   // Enter + Update
   linkLabels
     .attr('transform', function(d, i) {
@@ -104,7 +99,7 @@ export function draw(graph, options, callback) {
     })
     .select('text')
       .text(function(d, i) {
-        return i < graph.links.length ? d.sourcePercent + '%' : d.targetPercent + '%';
+        return (i < graph.links.length ? d.sourcePercent : d.targetPercent) + '%';
       })
       .attr('text-anchor', 'middle')
       .attr('dy', 6);
