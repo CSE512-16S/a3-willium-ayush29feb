@@ -72,7 +72,7 @@ This would be broken by making the diagram bi-directional.
 - Implementation of shelf (2 hours)
 - Implementation of UI toggles for question, bin, states, and party (3 hours)
 
-**Total**: 6+3+10+4+10+1+2+3 = 40 hours.
+**Total**: 6+3+11+4+10+1+2+3 = 40 hours.
 
 The writing and architecting of the codebase overall deffinitely took the most time. Creating the diagram was relatively easy once we got the right data to be in the right place at the right time to best utilize d3's data binding methods.
 
