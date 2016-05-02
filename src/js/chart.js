@@ -61,9 +61,8 @@ export function draw(graph, options, callback) {
     });
 
   links.on('mouseover', function(d) {
-    d3.select(this).moveToFront();
-    d3.select(this).classed('selected', true);
-    d3.selectAll('.label-' + d.meta.id).classed('hidden', false);
+    d3.select(this).moveToFront().classed('selected', true);
+    d3.selectAll('.label-' + d.meta.id).classed('hidden', false).moveToFront();
   }).on('mouseout', function(d) {
     d3.select(this).classed('selected', false);
     d3.selectAll('.label-' + d.meta.id).classed('hidden', true)
@@ -159,11 +158,13 @@ export function draw(graph, options, callback) {
         return (_.isEqual(d.type, 'source') && _.isEqual(o.meta.source_rank, d.meta.source_rank)) ||
           (_.isEqual(d.type, 'target') && _.isEqual(o.meta.target_id, d.meta.target_id));
       }).classed('selected', true);
+    
     const labelsClass = d.type === 'source' ? '.link-label-source-' + d.meta.source_rank : 
       '.link-label-target-' + d.meta.target_id;
-    d3.selectAll(labelsClass).classed('hidden', false);
+    d3.selectAll(labelsClass).classed('hidden', false).moveToFront();
   }).on('mouseout', function(d) {
     d3.selectAll('.selected').classed('selected', false);
+    
     const labelsClass = d.type === 'source' ? '.link-label-source-' + d.meta.source_rank : 
       '.link-label-target-' + d.meta.target_id;
     d3.selectAll(labelsClass).classed('hidden', true);
