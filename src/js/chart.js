@@ -62,6 +62,9 @@ export function draw(graph, options, callback) {
 
   links.on('mouseover', function(d) {
     d3.select(this).moveToFront();
+    d3.select(this).classed('selected', true);
+  }).on('mouseout', function(d) {
+    d3.select(this).classed('selected', false);
   });
   // Exit
   links.exit().remove();
