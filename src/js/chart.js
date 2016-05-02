@@ -1,7 +1,6 @@
 import d3 from 'd3';
 import config from './config';
 import UI from './ui';
-import * as util from './util';
 import { Sankey } from './sankey';
 import _ from 'lodash';
 
@@ -44,7 +43,7 @@ export function draw(graph, options, callback) {
     .layout(config.chart.iterations);
   
   appendPercent(graph);
-  
+
   // Draw the links
   var links = linksGroup.selectAll('.link').data(graph.links, function(d) { return d.meta.id; });
   // Enter
@@ -66,23 +65,30 @@ export function draw(graph, options, callback) {
   });
   // Exit
   links.exit().remove();
-
-  var linkLabels = linksGroup.selectAll('.link-label').data(graph.links, function(d) { return d.meta.id; });
+  var labeldata = _.concat(graph.links, graph.links);
+  console.log(labeldata.length);
+  var linkLabels = linksGroup.selectAll('.link-label')
+    .data(labeldata, function(d, i) { return i < graph.links.length ? 'source-' + d.meta.id : 'target-' + d.meta.id; });
+  console.log(linkLabels);
   // Enter
   var linkLabelEnterSelection = linkLabels.enter();
   
   linkLabelEnterSelection
     .append('g')
-      .attr('class', 'link-label source-label')
-      .append('text')
+      .attr('class', function (d, i) {
+        console.log(i);
+        return i < graph.links.length ? 'link-label source-label' : 'link-label target-label';
+      })
+      .append('text');
   
-  linkLabelEnterSelection
-    .append('g')
-      .attr('class', 'link-label target-label')
-      .append('text')
+  // linkLabelEnterSelection
+  //   .append('g')
+  //     .attr('class', 'link-label target-label')
+  //     .append('text')
     
   // Enter + Update
-  linksGroup.selectAll('.link-label').attr('transform', function(d, i) {
+  linkLabels
+    .attr('transform', function(d, i) {
       let location = i < graph.links.length ? 0.05 : 0.95;
       let p = svg.append('path').attr('d', function(o){ return path(d); }).style('display', 'none').node();
       let length = p.getTotalLength();
@@ -92,11 +98,13 @@ export function draw(graph, options, callback) {
     })
     .select('text')
       .text(function(d, i) {
+        console.log(i);
+        console.log(d.source.name, d.target.name);
         return i < graph.links.length ? d.sourcePercent : d.targetPercent;
       })
       .attr('text-anchor', 'middle')
       .attr('dy', 6);
-  
+
   // Exit
   linkLabels.exit().remove();
   
