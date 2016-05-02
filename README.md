@@ -80,4 +80,4 @@ The writing and architecting of the codebase overall deffinitely took the most t
 - Will & Ayush together worked on the storyboard and decided what interaction should be implemented.
 - Will wrote the python scripts to scrape the CNN website to collect data and cleaned it.
 - Ayush worked on the initial implementation of `Sankey.js` & Implemented interactions like hover highlighting, labels, and file structure.
-- Will worked on most of the UI controls, shelf, and rewriting in browerisfy.
+- Will worked on most of the UI controls, shelf, improving diagram readibility and rewriting in browerisfy.
